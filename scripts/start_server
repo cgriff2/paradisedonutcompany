@@ -1,5 +1,4 @@
 #!/bin/bash
-sudo -su
-cd ~
-systemctl start nginx
-dotnet run -project /ec2-user/paradisedonutcompany/paradisedonutcompany/paradisedonutcompany.csproj
+sudo systemctl start nginx
+cd paradisedonutcompany/paradisedonutcompany
+sudo dotnet run -project paradisedonutcompany.csproj
