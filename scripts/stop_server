@@ -6,8 +6,16 @@ if systemctl is-active --quiet nginx; then
     sudo systemctl stop nginx
 fi
 
-# Stop .NET application if it's running
-if systemctl is-active --quiet mydotnetapp.service; then  # Replace with your .NET service name
-    echo "Stopping .NET application..."
-    sudo systemctl stop mydotnetapp.service
+# Find the PID of the running .NET application (you might need to adjust the search term if your process name is different)
+PID=$(pgrep -f 'dotnet')
+
+# If the process is running, kill it
+if [ -n "$PID" ]; then
+    echo "Stopping .NET application (PID: $PID)..."
+    kill -SIGINT $PID  # SIGINT is equivalent to pressing Ctrl + C
+else
+    echo "No running .NET application found."
 fi
+
+# Optionally, you can use kill -9 to forcefully stop the process if it's not responding to SIGINT
+# kill -9 $PID
