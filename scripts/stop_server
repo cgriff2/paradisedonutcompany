@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Check if the service is active
+# Stop nginx if it's running
 if systemctl is-active --quiet nginx; then
-    # Stop the service if it's running
+    echo "Stopping nginx..."
     sudo systemctl stop nginx
+fi
+
+# Stop .NET application if it's running
+if systemctl is-active --quiet mydotnetapp.service; then  # Replace with your .NET service name
+    echo "Stopping .NET application..."
+    sudo systemctl stop mydotnetapp.service
 fi
