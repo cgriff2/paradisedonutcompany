@@ -6,16 +6,18 @@ if systemctl is-active --quiet nginx; then
     sudo systemctl stop nginx
 fi
 
-# Find the PID of the running .NET application (you might need to adjust the search term if your process name is different)
-PID=$(pgrep -f 'dotnet')
+# Find all processes with 'dotnet' in their command
+pids=$(pgrep -f 'dotnet')
 
-# If the process is running, kill it
-if [ -n "$PID" ]; then
-    echo "Stopping .NET application (PID: $PID)..."
-    kill -SIGINT $PID  # SIGINT is equivalent to pressing Ctrl + C
-else
-    echo "No running .NET application found."
+if [ -z "$pids" ]; then
+  echo "No dotnet processes found."
+  exit 0
 fi
 
-# Optionally, you can use kill -9 to forcefully stop the process if it's not responding to SIGINT
-# kill -9 $PID
+# Kill each found process
+for pid in $pids; do
+  echo "Killing process with PID $pid (dotnet)"
+  kill -SIGTERM "$pid"
+done
+
+echo "All dotnet processes have been terminated."
